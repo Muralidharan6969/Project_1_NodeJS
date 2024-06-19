@@ -2,6 +2,7 @@ const {app} = require('../config/config.js');
 const {router} = require('../Routes/AuthRoute.js');
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 const bodyParser = require('body-parser');
+const { AppError } = require('../Utils/Errors/AppError.js');
 
 app.use(bodyParser.json());
 
@@ -14,10 +15,18 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', router);
 
-app.use('*', (req, res) => {
+app.use('*', async (req, res, next) => {
+    throw new AppError(`The URL ${req.originalUrl} you are trying to hit is not available`, 404);
+    // res.status(404).json({
+    //     status: 'Failure',
+    //     message: 'URL Not Defined'
+    // }); 
+});
+
+app.use((err, req, res, next) => {
     res.status(404).json({
-        status: 'Failure',
-        message: 'URL Not Defined'
+        status: 'error',
+        message: err.message
     }); 
 });
 

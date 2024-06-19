@@ -16,12 +16,12 @@ const login = async (userObject) => {
     }
     // console.log("result :", result);
 
-    const token = await generateToken({
+    const token = generateToken({
         id: result.id,
         email: result.email,
         firstName: result.firstName,
         lastName: result.lastName
-    })
+    });
     // console.log("token object:", token);
 
     return generateResponse(statusCodes.OK, "Logged In Successfully", {
