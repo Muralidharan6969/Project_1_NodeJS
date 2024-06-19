@@ -1,10 +1,10 @@
-const {app} = require('../config/config.js');
-const {router} = require('../Routes/AuthRoute.js');
+const {app} = require('../../config/config.js');
+const {router} = require('../../Routes/AuthRoute.js');
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 const bodyParser = require('body-parser');
-const { AppError } = require('../Utils/Errors/AppError.js');
-const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
-const {customGlobalErrorHandler} = require('../Utils/Errors/CustomGlobalErrorHandler.js')
+const { AppError } = require('../../Utils/Errors/AppError.js');
+const { catchAsyncError } = require('../../Utils/Errors/CatchAsyncError.js');
+const {customGlobalErrorHandler} = require('../../Utils/Errors/CustomGlobalErrorHandler.js')
 
 app.use(bodyParser.json());
 

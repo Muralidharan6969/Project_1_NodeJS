@@ -1,6 +1,6 @@
 const {generateResponse} = require('../Utils/GenerateResponse')
 const {statusCodes} = require('../Utils/StatusCodes')
-const {User} = require('../Models/user')
+const {User} = require('../db/models/user.js')
 const bcrypt = require('bcrypt')
 const { AppError } = require('../Utils/Errors/AppError.js');
 const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');

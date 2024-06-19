@@ -1,5 +1,5 @@
 const {DataTypes} = require('sequelize');
-const {sequelize} = require('../config/SequalizePostgres')
+const {sequelize} = require('../../config/SequalizePostgres')
 
 const User = sequelize.define("User", {
         id: {
@@ -19,7 +19,8 @@ const User = sequelize.define("User", {
             type: DataTypes.STRING
         },
         email: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            unique: true
         },
         password: {
             type: DataTypes.STRING

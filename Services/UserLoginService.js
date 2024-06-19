@@ -1,4 +1,4 @@
-const {User} = require('../Models/user')
+const {User} = require('../db/models/user.js')
 const {statusCodes} = require('../Utils/StatusCodes')
 const {generateResponse} = require('../Utils/GenerateResponse')
 const bcrypt = require('bcrypt')
