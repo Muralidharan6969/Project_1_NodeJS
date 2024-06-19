@@ -1,16 +1,17 @@
 const {signup} = require('../Services/CreateUserService');
 const {login} = require('../Services/UserLoginService');
+const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError');
 
-const signupController = async (req, res) => {
+const signupController = catchAsyncError(async (req, res) => {
     const userObject = req.body;
     const result = await signup(userObject);
     res.status(result.statusCode).json({
         status: 'Success',
         message: result.message
     });
-}
+});
 
-const loginController = async (req, res) => {
+const loginController = catchAsyncError(async (req, res) => {
     const userObject = req.body;
     const result = await login(userObject);
     if(result.statusCode == 200){
@@ -27,7 +28,7 @@ const loginController = async (req, res) => {
             message: result.message,
         });
     }
-}
+});
 
 module.exports = {
     signupController,

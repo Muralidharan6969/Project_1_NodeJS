@@ -2,16 +2,20 @@ const {generateResponse} = require('../Utils/GenerateResponse')
 const {statusCodes} = require('../Utils/StatusCodes')
 const {User} = require('../Models/user')
 const bcrypt = require('bcrypt')
+const { AppError } = require('../Utils/Errors/AppError.js');
+const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
 
 const signup = async (userObject) => {
     const {email, password} = userObject;
     const result = await User.findOne({ where: {email}})
     if(result){
-        return generateResponse(statusCodes.CONFLICT, "User already exists. Try Logging In", null);
+        throw new AppError("User already exists. Try Logging In", statusCodes.CONFLICT);
+        // return generateResponse(statusCodes.CONFLICT, "User already exists. Try Logging In", null);
     }
 
     if(!['1', '2'].includes(userObject.userType)){
-        return generateResponse(statusCodes.BAD_REQUEST, "Invalid user type", null);
+        throw new AppError("Invalid user type", statusCodes.BAD_REQUEST);
+        // return generateResponse(statusCodes.BAD_REQUEST, "Invalid user type", null);
     }
 
     const hashedPassword = bcrypt.hashSync(password, 12)
@@ -25,11 +29,12 @@ const signup = async (userObject) => {
     })
 
     if(!newUser){
-        return generateResponse(statusCodes.INTERNAL_SEVRER_ERROR, "User Signup Request could not be completed", null);
+        throw new AppError("User Signup Request could not be completed", statusCodes.INTERNAL_SEVRER_ERROR);
+        // return generateResponse(statusCodes.INTERNAL_SEVRER_ERROR, "User Signup Request could not be completed", null);
     }
 
     return generateResponse(statusCodes.CREATED, "User has been registered succesfully", null);
-}
+};
 
 module.exports = {
     signup
