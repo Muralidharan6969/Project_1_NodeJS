@@ -1,3 +1,7 @@
+const { statusCodes } = require("../StatusCodes");
+const { AppError } = require("./AppError");
+const { ValidationError } = require('sequelize');
+
 const devEnvErrorHandler = (err, res) => {
     const message = err.message;
     const statusCode = err.statusCode;
@@ -38,6 +42,11 @@ const prodEnvErrorHandler = (err, res) => {
 }
 
 const customGlobalErrorHandler = (err, req, res, next) => {
+    if (err instanceof ValidationError) {
+        if(err.name === 'SequelizeUniqueConstraintError'){
+            err = new AppError(err.errors[0].message, statusCodes.UNPROCESSABLE_ENTITY);
+        }
+    }
     if(process.env.NODE_ENV === 'development'){
         return devEnvErrorHandler(err, res);
     }

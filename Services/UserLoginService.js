@@ -27,7 +27,7 @@ const login = async (userObject) => {
     return generateResponse(statusCodes.OK, "Logged In Successfully", {
         token: token
     })
-}
+};
 
 module.exports = {
     login
