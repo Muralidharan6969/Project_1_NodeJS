@@ -3,13 +3,13 @@ const {login} = require('../Services/UserLoginService');
 const { AppError } = require('../Utils/Errors/AppError');
 const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError');
 const { statusCodes } = require('../Utils/StatusCodes');
-const { userValidationSchema } = require('../Validations/UserModelValidation');
+const { userSignupValidationSchema, userLoginValidationSchema } = require('../Validations/UserModelValidation');
 
 
 const signupController = catchAsyncError(async (req, res, next) => {
     try{
         const userObject = req.body;
-        await userValidationSchema.validateAsync(userObject, {abortEarly: false});
+        await userSignupValidationSchema.validateAsync(userObject, {abortEarly: false});
         const result = await signup(userObject);
         res.status(result.statusCode).json({
             status: 'Success',
@@ -28,23 +28,27 @@ const signupController = catchAsyncError(async (req, res, next) => {
     }
 });
 
-const loginController = catchAsyncError(async (req, res) => {
-    const userObject = req.body;
-    const result = await login(userObject);
-    if(result.statusCode == 200){
+const loginController = catchAsyncError(async (req, res, next) => {
+    try{
+        const userObject = req.body;
+        await userLoginValidationSchema.validateAsync(userObject, {abortEarly: false});
+        const result = await login(userObject);
         res.status(result.statusCode).json({
             status: 'Success',
             message: result.message,
             token: result.data.token
         });
-        // console.log("token :", result.data);
     }
-    else{
-        res.status(result.statusCode).json({
-            status: 'Success',
-            message: result.message,
-        });
+    catch(error){
+        if(error.isJoi){
+            const errors = error.details.map((detail) => detail.message);
+            throw new AppError(errors, statusCodes.UNPROCESSABLE_ENTITY);
+        }
+        else{
+            next(error);
+        }
     }
+
 });
 
 module.exports = {

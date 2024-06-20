@@ -4,14 +4,10 @@ const {generateResponse} = require('../Utils/GenerateResponse')
 const bcrypt = require('bcrypt')
 const {generateToken} = require('../Services/GenerateTokenService')
 const { AppError } = require('../Utils/Errors/AppError.js');
-const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
+// const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
 
 const login = async (userObject) => {
     const {email, password} = userObject;
-    if(!email || !password){
-        throw new AppError("Please provide email and password", statusCodes.BAD_REQUEST);
-        // return generateResponse(statusCodes.BAD_REQUEST, "Please provide email and password", null);
-    }
 
     const result = await User.findOne({ where: {email}});
     if(!result || !(await bcrypt.compare(password, result.password))){
