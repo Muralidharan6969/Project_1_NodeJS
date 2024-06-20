@@ -4,10 +4,10 @@ const { ValidationError } = require('sequelize');
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 
 const devEnvErrorHandler = (err, res) => {
-    const message = err.message || 'Unknown error';
-    const statusCode = err.statusCode || 500;
-    const status = err.status || 'error';
-    const stack = err.stack || '';
+    const message = err.message;
+    const statusCode = err.statusCode;
+    const status = err.status;
+    const stack = err.stack;
 
     res.status(statusCode).json(
         {

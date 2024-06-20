@@ -16,6 +16,7 @@ const { createProductController,
 const {signupController, loginController} = require('./Controllers/AuthController');
 
 app.use(bodyParser.json());
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.status(200).json({

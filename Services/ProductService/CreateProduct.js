@@ -21,6 +21,11 @@ const createProduct = async (productObject) => {
         createdBy: 1,
     });
 
+    if(!result){
+        throw new AppError("Create Product request could not be completed", statusCodes.INTERNAL_SEVRER_ERROR);
+        // return generateResponse(statusCodes.INTERNAL_SEVRER_ERROR, "User Signup Request could not be completed", null);
+    }
+
     return generateResponse(statusCodes.CREATED, "Product has been created in the database succesfully", result);
 }
 
