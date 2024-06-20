@@ -1,9 +1,9 @@
-const {User} = require('../db/models/user.js')
-const {statusCodes} = require('../Utils/StatusCodes')
-const {generateResponse} = require('../Utils/GenerateResponse')
+const {User} = require('../../db/models/user.js')
+const {statusCodes} = require('../../Utils/StatusCodes.js')
+const {generateResponse} = require('../../Utils/GenerateResponse.js')
 const bcrypt = require('bcrypt')
-const {generateToken} = require('../Services/GenerateTokenService')
-const { AppError } = require('../Utils/Errors/AppError.js');
+const {generateToken} = require('../TokenService/GenerateTokenService.js')
+const { AppError } = require('../../Utils/Errors/AppError.js');
 // const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
 
 const login = async (userObject) => {

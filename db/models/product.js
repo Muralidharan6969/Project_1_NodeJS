@@ -23,7 +23,7 @@ const Product = sequelize.define("Product", {
         description: {
             type: DataTypes.TEXT
         },
-		productURL: {
+		productUrl: {
             type: DataTypes.STRING
         },
 		category: {

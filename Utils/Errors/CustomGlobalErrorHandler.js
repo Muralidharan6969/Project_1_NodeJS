@@ -1,12 +1,13 @@
-const { statusCodes } = require("../StatusCodes");
+const { statusCodes } = require('../StatusCodes');
 const { AppError } = require("./AppError");
 const { ValidationError } = require('sequelize');
+require('dotenv').config({ path: `${process.cwd()}/.env`});
 
 const devEnvErrorHandler = (err, res) => {
-    const message = err.message;
-    const statusCode = err.statusCode;
-    const status = err.status;
-    const stack = err.stack;
+    const message = err.message || 'Unknown error';
+    const statusCode = err.statusCode || 500;
+    const status = err.status || 'error';
+    const stack = err.stack || '';
 
     res.status(statusCode).json(
         {
@@ -48,6 +49,7 @@ const customGlobalErrorHandler = (err, req, res, next) => {
         }
     }
     if(process.env.NODE_ENV === 'development'){
+        console.log('Error object:', err);
         return devEnvErrorHandler(err, res);
     }
     prodEnvErrorHandler(err, res);

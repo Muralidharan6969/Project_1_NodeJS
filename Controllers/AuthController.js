@@ -1,5 +1,5 @@
-const {signup} = require('../Services/CreateUserService');
-const {login} = require('../Services/UserLoginService');
+const {signup} = require('../Services/UserService/CreateUserService');
+const {login} = require('../Services/UserService/UserLoginService');
 const { AppError } = require('../Utils/Errors/AppError');
 const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError');
 const { statusCodes } = require('../Utils/StatusCodes');

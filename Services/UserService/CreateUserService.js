@@ -1,8 +1,8 @@
-const {generateResponse} = require('../Utils/GenerateResponse')
-const {statusCodes} = require('../Utils/StatusCodes')
-const {User} = require('../db/models/user.js')
+const {generateResponse} = require('../../Utils/GenerateResponse.js')
+const {statusCodes} = require('../../Utils/StatusCodes.js')
+const {User} = require('../../db/models/user.js')
 const bcrypt = require('bcrypt')
-const { AppError } = require('../Utils/Errors/AppError.js');
+const { AppError } = require('../../Utils/Errors/AppError.js');
 // const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError.js');
 
 const signup = async (userObject) => {

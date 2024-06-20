@@ -1,11 +1,6 @@
-const express = require('express');
-const app = express();
-const router = express.Router();
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 
 module.exports = {
-    app,
-    router,
     "development": {
       "username": process.env.DB_USERNAME,
       "password": process.env.DB_PASSWORD,

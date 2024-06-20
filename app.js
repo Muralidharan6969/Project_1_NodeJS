@@ -1,10 +1,19 @@
-const {app} = require('./config/config.js');
-const {router} = require('./Routes/AuthRoute.js');
+const express = require('express');
+const app = express();
+const {authRouter} = require('./Routes/AuthRoute.js');
+const {productRouter} = require('./Routes/ProductRoute.js');
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 const bodyParser = require('body-parser');
 const { AppError } = require('./Utils/Errors/AppError.js');
 const { catchAsyncError } = require('./Utils/Errors/CatchAsyncError.js');
 const {customGlobalErrorHandler} = require('./Utils/Errors/CustomGlobalErrorHandler.js')
+const { createProductController,
+    getAllProductsController,
+    getProductByIdController,
+    updateProductController,
+    deleteProductController 
+} = require('./Controllers/ProductController');
+const {signupController, loginController} = require('./Controllers/AuthController');
 
 app.use(bodyParser.json());
 
@@ -15,7 +24,19 @@ app.get('/', (req, res) => {
     }); 
 });
 
-app.use('/api/v1/auth', router);
+// console.log('Auth Router is:', authRouter)
+// console.log('Product Router is:', productRouter)
+// console.log('createProductController is:', createProductController)
+// console.log('getAllProductsController is:', getAllProductsController)
+// console.log('getProductByIdController is:', getProductByIdController)
+// console.log('updateProductController is:', updateProductController)
+// console.log('deleteProductController is:', deleteProductController)
+// console.log('signupController is:', signupController)
+// console.log('loginController is:', loginController)
+
+
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/products', productRouter);
 
 app.use('*', catchAsyncError(async (req, res, next) => {
     throw new AppError(`The URL ${req.originalUrl} you are trying to hit is not available`, 404);
