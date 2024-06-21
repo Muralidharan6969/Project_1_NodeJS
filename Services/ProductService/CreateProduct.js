@@ -3,7 +3,7 @@ const {statusCodes} = require('../../Utils/StatusCodes.js')
 const {Product} = require('../../db/models/product.js')
 const { AppError } = require('../../Utils/Errors/AppError.js');
 
-const createProduct = async (productObject) => {
+const createProduct = async (productObject, userId) => {
     // const {id} = productObject;
     // const present = await Product.findOne({where: {id: id}});
     // if(present){
@@ -18,7 +18,7 @@ const createProduct = async (productObject) => {
         description: productObject.description,
         productUrl: productObject.productUrl,
         category: productObject.category,
-        createdBy: 1,
+        createdBy: userId,
     });
 
     if(!result){

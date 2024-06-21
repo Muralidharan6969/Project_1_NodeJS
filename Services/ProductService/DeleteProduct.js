@@ -3,8 +3,8 @@ const {statusCodes} = require('../../Utils/StatusCodes.js')
 const {Product} = require('../../db/models/product.js')
 const { AppError } = require('../../Utils/Errors/AppError.js');
 
-const deleteProduct = async(productId) => {
-    const result = await Product.findOne({where: {id: productId}});
+const deleteProduct = async(productId, userId) => {
+    const result = await Product.findOne({where: {id: productId, createdBy: userId}});
 
     if(!result){
         throw new AppError("Product to be deleted does not exist", statusCodes.BAD_REQUEST);

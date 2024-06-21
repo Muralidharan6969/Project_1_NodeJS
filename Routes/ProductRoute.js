@@ -12,11 +12,11 @@ const{ validateTokenController,
 productRouter
     .route('/')
     .post(validateTokenController, roleAuthorizationController('1'), createProductController)
-    .get(validateTokenController, roleAuthorizationController('1'), getAllProductsController);
+    .get(validateTokenController, getAllProductsController);
 
     productRouter
     .route('/:id')
-    .get(validateTokenController, roleAuthorizationController('2'), getProductByIdController)
+    .get(validateTokenController, getProductByIdController)
     .patch(validateTokenController, roleAuthorizationController('1'), updateProductController)
     .delete(validateTokenController, roleAuthorizationController('1'), deleteProductController);
 

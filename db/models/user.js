@@ -1,5 +1,7 @@
 const {DataTypes} = require('sequelize');
-const {sequelize} = require('../../config/SequalizePostgres')
+const {sequelize} = require('../../config/SequalizePostgres');
+const { Product } = require('./product');
+const { FOREIGNKEYS } = require('sequelize/lib/query-types');
 
 const User = sequelize.define("User", {
         id: {
@@ -36,7 +38,14 @@ const User = sequelize.define("User", {
         deletedAt: {
             type: DataTypes.DATE
         }
-    });
+    },
+    {
+        paranoid: true 
+    }
+);
+
+User.hasMany(Product, {foreignKey: 'createdBy'});
+Product.belongsTo(User, {foreignKey: 'createdBy'});
 
 module.exports = {
     User

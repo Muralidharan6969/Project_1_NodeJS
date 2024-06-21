@@ -3,9 +3,9 @@ const {statusCodes} = require('../../Utils/StatusCodes.js')
 const {Product} = require('../../db/models/product.js')
 const { AppError } = require('../../Utils/Errors/AppError.js');
 
-const updateProduct = async (productId, productObject) => {
+const updateProduct = async (productId, productObject, userId) => {
 
-    const result = await Product.findOne( {where: {id: productId}})
+    const result = await Product.findOne( {where: {id: productId, createdBy: userId}})
 
     if(!result){
         throw new AppError("Product does not exists", statusCodes.BAD_REQUEST);
@@ -22,7 +22,7 @@ const updateProduct = async (productId, productObject) => {
     
     const updatedResult = await result.save();
 
-    return generateResponse(statusCodes.ACCEPTED, "Product has been created in the database succesfully", updatedResult);
+    return generateResponse(statusCodes.ACCEPTED, "Product has been updated in the database succesfully", updatedResult);
 }
 
 module.exports = {

@@ -47,7 +47,11 @@ const Product = sequelize.define("Product", {
         deletedAt: {
             type: DataTypes.DATE
         }
-    });
+    },
+    {
+        paranoid: true 
+    }
+);
 
 module.exports = {
     Product

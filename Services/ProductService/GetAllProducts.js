@@ -2,9 +2,10 @@ const {generateResponse} = require('../../Utils/GenerateResponse.js')
 const {statusCodes} = require('../../Utils/StatusCodes.js')
 const {Product} = require('../../db/models/product.js')
 const { AppError } = require('../../Utils/Errors/AppError.js');
+const { User } = require('../../db/models/user.js');
 
 const getAllProducts = async() => {
-    const result = await Product.findAll();
+    const result = await Product.findAll({include: User});
 
     if(!result){
         throw new AppError("Fetch all product request could not be completed", statusCodes.INTERNAL_SEVRER_ERROR);

@@ -12,8 +12,9 @@ const { statusCodes } = require('../Utils/StatusCodes');
 const createProductController = catchAsyncError(async (req, res, next) => {
     try{
         const productObject = req.body;
+        const userObject = req.user;
         await productValidateSchema.validateAsync(productObject, {abortEarly: false});
-        const result = await createProduct(productObject);
+        const result = await createProduct(productObject, userObject.id);
         res.status(result.statusCode).json({
             status: 'Success',
             message: result.message,
@@ -66,9 +67,10 @@ const updateProductController = catchAsyncError(async(req, res, next) => {
     try{
         const productId = req.params.id;
         const productObject = req.body;
+        const userObject = req.user;
         await productIdValidateSchema.validateAsync(productId, {abortEarly: false});
         await productValidateSchema.validateAsync(productObject, {abortEarly: false});
-        const result = await updateProduct(productId, productObject);
+        const result = await updateProduct(productId, productObject, userObject.id);
         res.status(result.statusCode).json({
             status: 'Success',
             message: result.message,
@@ -89,8 +91,9 @@ const updateProductController = catchAsyncError(async(req, res, next) => {
 const deleteProductController = catchAsyncError(async(req, res, next) => {
     try{
         const productId = req.params.id;
+        const userObject = req.user;
         await productIdValidateSchema.validateAsync(productId, {abortEarly: false});
-        const result = await deleteProduct(productId);
+        const result = await deleteProduct(productId, userObject.id);
         res.status(result.statusCode).json({
             status: 'Success',
             message: result.message
