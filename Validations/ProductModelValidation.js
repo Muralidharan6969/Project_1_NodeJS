@@ -48,15 +48,6 @@ const productValidateSchema = Joi.object({
         'any.required': 'Product URL is a required field',
     }),
 
-    category: Joi.array().items(Joi.string())
-    .required()
-    .messages({
-        'array.base': 'Category must be an array',
-        'array.empty': 'Category cannot be an empty array',
-        'any.required': 'Category is a required field',
-        'string.empty': 'Each category item must be a non-empty string',
-    })
-
 });
 
 const productIdValidateSchema = Joi.number()

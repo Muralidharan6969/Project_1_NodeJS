@@ -1,7 +1,6 @@
 const {DataTypes} = require('sequelize');
 const {sequelize} = require('../../config/SequalizePostgres');
 const { Product } = require('./product');
-const { FOREIGNKEYS } = require('sequelize/lib/query-types');
 
 const User = sequelize.define("User", {
         id: {

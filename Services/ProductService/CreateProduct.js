@@ -2,8 +2,9 @@ const {generateResponse} = require('../../Utils/GenerateResponse.js')
 const {statusCodes} = require('../../Utils/StatusCodes.js')
 const {Product} = require('../../db/models/product.js')
 const { AppError } = require('../../Utils/Errors/AppError.js');
+const {Category} = require('../../db/models/category.js')
 
-const createProduct = async (productObject, userId) => {
+const createProduct = async (productObject, userId, category) => {
     // const {id} = productObject;
     // const present = await Product.findOne({where: {id: id}});
     // if(present){
@@ -17,9 +18,15 @@ const createProduct = async (productObject, userId) => {
         shortDescription: productObject.shortDescription,
         description: productObject.description,
         productUrl: productObject.productUrl,
-        category: productObject.category,
         createdBy: userId,
     });
+
+    if(category && category.length>0){
+        const categories = await Category.findAll({
+            where: { id: category },
+        });
+        await result.setCategories(categories);
+    }
 
     if(!result){
         throw new AppError("Create Product request could not be completed", statusCodes.INTERNAL_SEVRER_ERROR);

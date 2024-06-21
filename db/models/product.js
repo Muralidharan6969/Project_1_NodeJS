@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const {sequelize} = require('../../config/SequalizePostgres')
+const { Category } = require('./category')
 
 const Product = sequelize.define("Product", {
         id: {
@@ -26,9 +27,6 @@ const Product = sequelize.define("Product", {
 		productUrl: {
             type: DataTypes.STRING
         },
-		category: {
-			type: DataTypes.ARRAY(DataTypes.STRING),
-		},
 		createdBy: {
 			type: DataTypes.INTEGER,
 			references: {
@@ -52,6 +50,9 @@ const Product = sequelize.define("Product", {
         paranoid: true 
     }
 );
+
+Product.belongsToMany(Category, { through: 'ProductCategories', foreignKey: 'productId', onDelete: 'CASCADE' });
+Category.belongsToMany(Product, { through: 'ProductCategories', foreignKey: 'categoryId' });
 
 module.exports = {
     Product

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const {authRouter} = require('./Routes/AuthRoute.js');
 const {productRouter} = require('./Routes/ProductRoute.js');
+const {categoryRouter} = require('./Routes/CategoryRoute.js');
 require('dotenv').config({ path: `${process.cwd()}/.env`});
 const bodyParser = require('body-parser');
 const { AppError } = require('./Utils/Errors/AppError.js');
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/categories', categoryRouter);
 
 app._router.stack.forEach(function (middleware) {
     if (middleware.route) { // routes registered directly on the app
