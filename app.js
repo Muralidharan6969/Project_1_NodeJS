@@ -7,13 +7,6 @@ const bodyParser = require('body-parser');
 const { AppError } = require('./Utils/Errors/AppError.js');
 const { catchAsyncError } = require('./Utils/Errors/CatchAsyncError.js');
 const {customGlobalErrorHandler} = require('./Utils/Errors/CustomGlobalErrorHandler.js')
-const { createProductController,
-    getAllProductsController,
-    getProductByIdController,
-    updateProductController,
-    deleteProductController 
-} = require('./Controllers/ProductController');
-const {signupController, loginController} = require('./Controllers/AuthController');
 
 app.use(bodyParser.json());
 app.use(express.json());
@@ -25,19 +18,22 @@ app.get('/', (req, res) => {
     }); 
 });
 
-// console.log('Auth Router is:', authRouter)
-// console.log('Product Router is:', productRouter)
-// console.log('createProductController is:', createProductController)
-// console.log('getAllProductsController is:', getAllProductsController)
-// console.log('getProductByIdController is:', getProductByIdController)
-// console.log('updateProductController is:', updateProductController)
-// console.log('deleteProductController is:', deleteProductController)
-// console.log('signupController is:', signupController)
-// console.log('loginController is:', loginController)
-
-
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
+
+app._router.stack.forEach(function (middleware) {
+    if (middleware.route) { // routes registered directly on the app
+        const { route } = middleware;
+        const methods = Object.keys(route.methods).join(', ').toUpperCase();
+        console.log(`${methods} ${route.path}`);
+    } else if (middleware.name === 'router') { // router middleware
+        middleware.handle.stack.forEach(function (handler) {
+            const { route } = handler;
+            const methods = Object.keys(route.methods).join(', ').toUpperCase();
+            console.log(`${methods} ${route.path}`);
+        });
+    }
+});
 
 app.use('*', catchAsyncError(async (req, res, next) => {
     throw new AppError(`The URL ${req.originalUrl} you are trying to hit is not available`, 404);

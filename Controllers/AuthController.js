@@ -4,6 +4,7 @@ const { AppError } = require('../Utils/Errors/AppError');
 const { catchAsyncError } = require('../Utils/Errors/CatchAsyncError');
 const { statusCodes } = require('../Utils/StatusCodes');
 const { userSignupValidationSchema, userLoginValidationSchema } = require('../Validations/UserModelValidation');
+const { validateToken } = require('../Services/TokenService/ValidateTokenService')
 
 
 const signupController = catchAsyncError(async (req, res, next) => {
@@ -51,7 +52,30 @@ const loginController = catchAsyncError(async (req, res, next) => {
 
 });
 
+const validateTokenController = catchAsyncError(async (req, res, next) => {
+    const token = req.headers.authorization;
+    if(token && token.startsWith('Bearer ')){
+        try{
+            const result = await validateToken(token);
+            req.user = result.data;
+            // return next();
+            res.status(result.statusCode).json({
+                status: 'Success',
+                message: result.message,
+                data: req.user
+            });
+        }
+        catch(error){
+            next(error);
+        }
+    }
+    else{
+        throw new AppError("Please login to access", statusCodes.FORBIDDEN);
+    }
+});
+
 module.exports = {
     signupController,
-    loginController
+    loginController,
+    validateTokenController
 }
