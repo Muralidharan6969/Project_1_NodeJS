@@ -6,17 +6,19 @@ const { createProductController,
         updateProductController,
         deleteProductController 
 } = require('../Controllers/ProductController');
+const{ validateTokenController,
+    roleAuthorizationController } = require('../Controllers/AuthController')
 
 productRouter
     .route('/')
-    .post(createProductController)
-    .get(getAllProductsController);
+    .post(validateTokenController, roleAuthorizationController('1'), createProductController)
+    .get(validateTokenController, roleAuthorizationController('1'), getAllProductsController);
 
     productRouter
     .route('/:id')
-    .get(getProductByIdController)
-    .patch(updateProductController)
-    .delete(deleteProductController);
+    .get(validateTokenController, roleAuthorizationController('2'), getProductByIdController)
+    .patch(validateTokenController, roleAuthorizationController('1'), updateProductController)
+    .delete(validateTokenController, roleAuthorizationController('1'), deleteProductController);
 
 module.exports = {
     productRouter

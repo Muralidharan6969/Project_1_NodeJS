@@ -58,12 +58,12 @@ const validateTokenController = catchAsyncError(async (req, res, next) => {
         try{
             const result = await validateToken(token);
             req.user = result.data;
-            // return next();
-            res.status(result.statusCode).json({
-                status: 'Success',
-                message: result.message,
-                data: req.user
-            });
+            return next();
+            // res.status(result.statusCode).json({
+            //     status: 'Success',
+            //     message: result.message,
+            //     data: req.user
+            // });
         }
         catch(error){
             next(error);
@@ -74,8 +74,18 @@ const validateTokenController = catchAsyncError(async (req, res, next) => {
     }
 });
 
+const roleAuthorizationController = (...userTypes) => {
+    return (req, res, next) => {
+        if(!userTypes.includes(req.user.userType)){
+            throw new AppError("User is not authorized to perform this operation", statusCodes.FORBIDDEN);
+        }
+        return next();
+    } 
+}
+
 module.exports = {
     signupController,
     loginController,
-    validateTokenController
+    validateTokenController,
+    roleAuthorizationController
 }
