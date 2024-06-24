@@ -5,6 +5,12 @@ const { AppError } = require('../../Utils/Errors/AppError.js');
 const { Category } = require('../../db/models/category.js');
 
 const getAllProductsByCategoryId = async(categoryId) => {
+
+    const categoryResult = await Category.findOne({where: {id: categoryId}});
+
+    if(!categoryResult){
+        throw new AppError(`Category with id: ${categoryId} does not exist`, statusCodes.BAD_REQUEST);
+    }
     const result = await Product.findAll({
         include: [
             {
